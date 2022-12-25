@@ -9,9 +9,6 @@
 #include <random>
 
 using timer = std::chrono::steady_clock;
-
-// settings
-
 const char* title = "Particle Simulator";
 GLuint shaderProgram;
 
@@ -181,21 +178,21 @@ void processInput(GLFWwindow* window) {
 }
 
 int main() {
-    // initialization
+    // Initialize GLFW.
     initGLFW(3, 3);
 
-    // create window
+    // Create window and return error if it does not initialize.
     GLFWwindow* window = nullptr;
     createWindow(window, title);
     if (!window) {
-        std::cout << "Could not create window" << std::endl;
+        std::cout << "GLERROR: Could not create window." << std::endl;
         glfwTerminate();
         return -1;
     }
 
-    // load glad
+    // Load GLAD and return error if it does not initialize.
     if (!loadGlad()) {
-        std::cout << "Could not init GLAD" << std::endl;
+        std::cout << "GLERROR: Could not initialize GLAD." << std::endl;
         glfwTerminate();
         return -1;
     }
@@ -206,11 +203,11 @@ int main() {
     shaderProgram = genShaderProgram("main.vs", "main.fs");
     setOrthographicProjection(shaderProgram, 0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0.0f, 1.0f);
 
-    for (int i = 0; i < 2000; i++) {
+    for (int i = 0; i < 3; i++) {
         entities.push_back(new Entity(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20)));
     }
 
-    double tickspersecond = 1.0 / 60.0f;
+    double tickspersecond = 1.0 / TIMESTEP;
     double lastTime = glfwGetTime();
     double deltaTime = 0, nowTime = 0;
 
@@ -236,18 +233,18 @@ int main() {
             deltaTime--;
         }
         
-        // Bind Shader and render object.
+        // Bind Shader and Render objects.
         glUseProgram(shaderProgram);
         for (int i = 0; i < entities.size(); i++) {
-            entities[i]->Render();
+            entities[i]->Render(deltaTime);
         }
         
-        // swap frames
+        // Swap Frame Buffers and poll for events.
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    // cleanup memory
+    // Cleanup memory
     for (int i = 0; i < entities.size(); i++) {
         delete entities[i];
     }

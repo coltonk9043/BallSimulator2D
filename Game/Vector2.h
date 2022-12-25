@@ -23,16 +23,18 @@ public:
 	Vector2 operator* (float const& val) const;
 	Vector2 operator/ (float const& val) const;
 
-	Vector2 Normalized();
 
-	void Normalize();
-    void Rotate(float angle);
 	void Set(float x, float y);
-    float CrossProduct(const Vector2& rhs) const;
-    float Magnitude();
-	float DotProduct(const Vector2& rhs) const;
-
 	float* AsArray();
+
+	// Math
+    float CrossProduct(const Vector2& rhs) const;
+	float DotProduct(const Vector2& rhs) const;
+    float Magnitude();
+	void Rotate(float angle);
+	Vector2 Normalized();
+	void Normalize();
+
 };
 
 #endif

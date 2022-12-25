@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "Collider.h"
 
 Entity::Entity() {
 	this->position = Vector2(0.0f, 0.0f);
@@ -28,31 +29,34 @@ Entity::~Entity() {
     glDeleteVertexArrays(1, &vao.index);
 }
 
-void Entity::Render() {
+void Entity::Render(float frameDelta) {
+    // Finish copying position into VAO data.
+    glBindBuffer(GL_ARRAY_BUFFER, vao.positionVBO);
+    Vector2 pos = this->position + ((this->velocity*frameDelta) / TIMESTEP);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, 2 * sizeof(float), pos.AsArray());
+
     glBindVertexArray(vao.index);
     glDrawElementsInstanced(GL_TRIANGLES, 3 * numTriangles, GL_UNSIGNED_INT, 0, 1);
 }
 
 void Entity::Update() {
-    // Entity Update
-    this->velocity = this->velocity + (this->force / this->mass);
-    this->position = this->position + (this->velocity / 60.0f);
-    
-    if (this->position.y < this->radius) this->velocity.y = -this->velocity.y;
-    if (this->position.x < this->radius || this->position.x > SCREEN_WIDTH - this->radius) this->velocity.x = -this->velocity.x;
+    if (usePhysics) {
+        // Entity Update
+        this->velocity = this->velocity + (this->force / this->mass);
+        this->position = this->position + (this->velocity / TIMESTEP);
 
-    // Resets the net force at the end.
-    if (this->position.y <= this->radius) this->position.y = this->radius;
-    else this->force.Set(0, GRAVITY * this->mass);
+        if (this->position.y < this->radius || this->position.y > SCREEN_HEIGHT - this->radius)   this->velocity.y = -this->velocity.y;
+        if (this->position.x < this->radius || this->position.x > SCREEN_WIDTH - this->radius) this->velocity.x = -this->velocity.x;
 
-    // Finish copying position into VAO data.
-    glBindBuffer(GL_ARRAY_BUFFER, vao.positionVBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, 2 * sizeof(float), this->position.AsArray());
+        // Resets the net force at the end.
+        if (this->position.y <= this->radius) this->position.y = this->radius;
+        else this->force.Set(0, GRAVITY * this->mass);
+    }
+
+
 }
 
 void Entity::PrepareModel() {
-    int numTriangles = 20;
-
     float* vertices = new float[(numTriangles + 1) * 2];
 
     // set origin

@@ -15,21 +15,19 @@ class Entity
 		Entity(Vector2 position, float rotation);
 		~Entity();
 		void Update();
-		void Render();
+		void Render(float frameDelta);
 		Vector2 position;
 		Vector2 velocity;
 		Vector2 force;
 		float rotation;
 		float mass;
 	private:
-		// Variables
 		VAO vao;
 		float radius = 5.0f;
-
-		// Functions
+		bool  usePhysics = true;
 		void PrepareModel();
 	protected:
-		int numTriangles = 50;
+		int numTriangles = 20;
 };
 
 #endif

@@ -6,10 +6,14 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+const float TIMESTEP = 60;
 const float GRAVITY = -9.81f;
 const unsigned int SCREEN_WIDTH = 800;
 const unsigned int SCREEN_HEIGHT = 600;
+const bool FULLSCREEN = true;
+
 // structure for VAO storing Array Object and its Buffer Objects
+
 struct VAO {
     GLuint index;
     GLuint verticesVBO;
