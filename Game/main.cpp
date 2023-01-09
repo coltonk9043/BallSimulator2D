@@ -6,25 +6,11 @@
 #include <fstream>
 #include "Entity.h"
 #include <chrono>
-#include <random>
 
 using timer = std::chrono::steady_clock;
 const char* title = "Particle Simulator";
 GLuint shaderProgram;
-
-static std::vector<Entity*> entities;
-
-void initGLFW(unsigned int versionMajor, unsigned int versionMinor) {
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, versionMajor);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, versionMinor);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    // MacOS specific parameter
-    #ifdef __APPLE__
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    #endif
-}
+std::vector<Entity*> entities;
 
 /// <summary>
 /// Creates a Window with a given title, width, and height.
@@ -41,6 +27,7 @@ void createWindow(GLFWwindow*& window,
         return;
     }
     glfwMakeContextCurrent(window);
+    glfwSwapInterval(1);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 }
 
@@ -52,18 +39,21 @@ bool loadGlad() {
     return gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 }
 
-// read file
+/// <summary>
+/// Reads a file and returns it as a string.
+/// </summary>
+/// <param name="filename">The file name (including path) of the file.</param>
+/// <returns>String representation of file.</returns>
 std::string readFile(const char* filename) {
     std::ifstream file;
     std::stringstream buf;
-
     std::string ret = "";
 
-    // open file
+    // Opens the file
     file.open(filename);
 
     if (file.is_open()) {
-        // read buffer
+        // Read file buffer as a string.
         buf << file.rdbuf();
         ret = buf.str();
     }
@@ -71,23 +61,27 @@ std::string readFile(const char* filename) {
         std::cout << "Could not open " << filename << std::endl;
     }
 
-    // close file
+    // Close file and return
     file.close();
-
     return ret;
 }
 
-// generate shader
-int genShader(const char* filepath, GLenum type) {
+/// <summary>
+/// Compiles an individual shader.
+/// </summary>
+/// <param name="filepath">The file name (including path) to the shader.</param>
+/// <param name="type">The type of shader program (Vertex/Fragment).</param>
+/// <returns>The index of the shader.</returns>
+int compileShader(const char* filepath, GLenum type) {
     std::string shaderSrc = readFile(filepath);
     const GLchar* shader = shaderSrc.c_str();
 
-    // build and compile shader
+    // Builds and compiles shaders.
     int shaderObj = glCreateShader(type);
     glShaderSource(shaderObj, 1, &shader, NULL);
     glCompileShader(shaderObj);
 
-    // check for errors
+    // Check for errors in compile.
     int success;
     char infoLog[512];
     glGetShaderiv(shaderObj, GL_COMPILE_STATUS, &success);
@@ -100,24 +94,28 @@ int genShader(const char* filepath, GLenum type) {
     return shaderObj;
 }
 
-// generate shader program
-int genShaderProgram(const char* vertexShaderPath, const char* fragmentShaderPath) {
+/// <summary>
+/// Compiles a full shader program given a vertex and fragment shader.
+/// </summary>
+/// <param name="vertexShaderPath">The pointer to the Vertex Shader.</param>
+/// <param name="fragmentShaderPath">The pointer to the Fragment Shader.</param>
+/// <returns>The index of the full shader program.</returns>
+int compileShaderProgram(const char* vertexShaderPath, const char* fragmentShaderPath) {
     int shaderProgram = glCreateProgram();
 
-    // compile shaders
-    int vertexShader = genShader(vertexShaderPath, GL_VERTEX_SHADER);
-    int fragmentShader = genShader(fragmentShaderPath, GL_FRAGMENT_SHADER);
+    // Compiles the shaders.
+    int vertexShader = compileShader(vertexShaderPath, GL_VERTEX_SHADER);
+    int fragmentShader = compileShader(fragmentShaderPath, GL_FRAGMENT_SHADER);
 
-    if (vertexShader == -1 || fragmentShader == -1) {
+    if (vertexShader == -1 || fragmentShader == -1)
         return -1;
-    }
 
-    // link shaders
+    // Link the shaders to the program.
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
     glLinkProgram(shaderProgram);
 
-    // check for errors
+    // Checks for errors.
     int success;
     char infoLog[512];
     glGetShaderiv(shaderProgram, GL_LINK_STATUS, &success);
@@ -134,10 +132,7 @@ int genShaderProgram(const char* vertexShaderPath, const char* fragmentShaderPat
 }
 
 // set projection
-void setOrthographicProjection(int shaderProgram,
-    float left, float right,
-    float bottom, float top,
-    float near, float far) {
+void setOrthographicProjection(int shaderProgram, float left, float right, float bottom, float top, float near, float far) {
     float mat[4][4] = {
         { 2.0f / (right - left), 0.0f, 0.0f, 0.0f },
         { 0.0f, 2.0f / (top - bottom), 0.0f, 0.0f },
@@ -151,17 +146,26 @@ void setOrthographicProjection(int shaderProgram,
 
 // process input
 void processInput(GLFWwindow* window) {
+    double xpos, ypos;
+
+    glfwGetCursorPos(window, &xpos, &ypos);
+    ypos = SCREEN_HEIGHT - ypos;
+
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1)) {
+        entities.push_back(new Entity(Vector2(xpos, ypos)));
+    }
+
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
     }
 
-    // left paddle
+    // Moves all balls.
     Vector2 movement (0.0f, 0.0f);
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        movement.y = 1.0f;
+        movement.y = 5.0f;
     }
     else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        movement.y = -1.0f;
+        movement.y = -5.0f;
     }
 
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
@@ -172,14 +176,22 @@ void processInput(GLFWwindow* window) {
     }
 
     for (int i = 0; i < entities.size(); i++) {
-        entities[i]->force.y += 5* movement.y;
+        entities[i]->position.y += movement.y;
         entities[i]->force.x += 5* movement.x;
     }
 }
 
 int main() {
     // Initialize GLFW.
-    initGLFW(3, 3);
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    // MacOS specific parameter
+    #ifdef __APPLE__
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    #endif
 
     // Create window and return error if it does not initialize.
     GLFWwindow* window = nullptr;
@@ -197,17 +209,19 @@ int main() {
         return -1;
     }
 
+    // Declares our viewport and compiled shaders.
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-    // shaders
-    shaderProgram = genShaderProgram("main.vs", "main.fs");
+    shaderProgram = compileShaderProgram("main.vs", "main.fs");
     setOrthographicProjection(shaderProgram, 0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0.0f, 1.0f);
+    glUseProgram(shaderProgram);
 
-    for (int i = 0; i < 3; i++) {
+    // Spawn Entities.
+    for (int i = 0; i < 10; i++) {
         entities.push_back(new Entity(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20)));
     }
 
-    double tickspersecond = 1.0 / TIMESTEP;
     double lastTime = glfwGetTime();
     double deltaTime = 0, nowTime = 0;
 
@@ -215,30 +229,36 @@ int main() {
     while (!glfwWindowShouldClose(window)) {
         // - Measure time
         nowTime = glfwGetTime();
-        deltaTime += (nowTime - lastTime) / tickspersecond;
+        deltaTime += (nowTime - lastTime) * TICKS_PER_SECOND;
         lastTime = nowTime;
 
         // Process input of the Scene
         processInput(window);
-
-        // Clear the screen for a new frame.
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
 
         // Updates entity in scene.
         while (deltaTime >= 1.0) {
             for (int i = 0; i < entities.size(); i++) {
                 entities[i]->Update();
             }
+
+            for (int i = 0; i < entities.size(); i++) {
+                entities[i]->CheckCollisions(entities);
+            }
             deltaTime--;
         }
         
-        // Bind Shader and Render objects.
-        glUseProgram(shaderProgram);
+        // Clear the screen for a new frame.
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // Render objects.
         for (int i = 0; i < entities.size(); i++) {
             entities[i]->Render(deltaTime);
         }
-        
+
+        //GLenum errors = glGetError();
+        //if (errors == GL_NO_ERROR) std::cout << "[LOG] No Errors Reported.\n";
+        //else std::cout << "[ERROR] Errors found in OpenGL rendering.";
+
         // Swap Frame Buffers and poll for events.
         glfwSwapBuffers(window);
         glfwPollEvents();

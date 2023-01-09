@@ -1,7 +1,9 @@
 #version 330 core
 
+smooth in vec4 out_color;
+
 out vec4 color;
 
 void main() {
-	color = vec4(1.0);
+	color = out_color;
 }

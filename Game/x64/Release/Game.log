@@ -1,4 +1,26 @@
-﻿  Entity.cpp
-C:\Code Projects\ParticleSimulator2D\Game\Common.h(3,10): fatal error C1083: Cannot open include file: 'glad/glad.h': No such file or directory
+﻿  Colliders.cpp
+  Entity.cpp
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Entity.cpp(118,32): warning C4018: '<': signed/unsigned mismatch
   main.cpp
-C:\Code Projects\ParticleSimulator2D\Game\Common.h(3,10): fatal error C1083: Cannot open include file: 'glad/glad.h': No such file or directory
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\main.cpp(155,53): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\main.cpp(155,47): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\main.cpp(222,98): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\main.cpp(222,69): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\main.cpp(255,33): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  glad.c
+main.obj : error LNK2001: unresolved external symbol glfwSwapBuffers
+main.obj : error LNK2001: unresolved external symbol glfwSwapInterval
+main.obj : error LNK2001: unresolved external symbol glfwGetTime
+main.obj : error LNK2001: unresolved external symbol glfwGetKey
+main.obj : error LNK2001: unresolved external symbol glfwGetMouseButton
+main.obj : error LNK2001: unresolved external symbol glfwTerminate
+main.obj : error LNK2001: unresolved external symbol glfwPollEvents
+main.obj : error LNK2001: unresolved external symbol glfwInit
+main.obj : error LNK2001: unresolved external symbol glfwSetWindowShouldClose
+main.obj : error LNK2001: unresolved external symbol glfwCreateWindow
+main.obj : error LNK2001: unresolved external symbol glfwWindowHint
+main.obj : error LNK2001: unresolved external symbol glfwMakeContextCurrent
+main.obj : error LNK2001: unresolved external symbol glfwGetProcAddress
+main.obj : error LNK2001: unresolved external symbol glfwGetCursorPos
+main.obj : error LNK2001: unresolved external symbol glfwWindowShouldClose
+C:\Users\Colton\Desktop\ParticleSimulator2D\x64\Release\Game.exe : fatal error LNK1120: 15 unresolved externals

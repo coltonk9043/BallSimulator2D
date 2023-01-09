@@ -21,6 +21,7 @@ public:
 	Vector2 operator+ (float const& val) const;
 	Vector2 operator- (float const& val) const;
 	Vector2 operator* (float const& val) const;
+	Vector2 operator*= (float const& val) const;
 	Vector2 operator/ (float const& val) const;
 
 

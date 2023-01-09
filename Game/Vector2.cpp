@@ -59,6 +59,13 @@ Vector2 Vector2::operator*(float const& val) const {
 	return vec;
 }
 
+Vector2 Vector2::operator*=(float const& val) const {
+	Vector2 vec;
+	vec.x = x * val;
+	vec.y = y * val;
+	return vec;
+}
+
 Vector2 Vector2::operator/(float const& val) const {
 	Vector2 vec;
 	vec.x = x / val;
