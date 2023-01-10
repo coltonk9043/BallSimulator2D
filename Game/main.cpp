@@ -6,10 +6,11 @@
 #include <fstream>
 #include "Entity.h"
 #include <chrono>
-
+#include "Input.h"
 using timer = std::chrono::steady_clock;
 const char* title = "Particle Simulator";
 GLuint shaderProgram;
+Input* input;
 std::vector<Entity*> entities;
 
 /// <summary>
@@ -151,7 +152,7 @@ void processInput(GLFWwindow* window) {
     glfwGetCursorPos(window, &xpos, &ypos);
     ypos = SCREEN_HEIGHT - ypos;
 
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1)) {
+    if (input->getMouseButtonPressed(GLFW_MOUSE_BUTTON_1)) {
         entities.push_back(new Entity(Vector2(xpos, ypos)));
     }
 
@@ -209,6 +210,9 @@ int main() {
         return -1;
     }
 
+    // Creates our input class.
+    input = new Input(window);
+
     // Declares our viewport and compiled shaders.
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -218,7 +222,7 @@ int main() {
     glUseProgram(shaderProgram);
 
     // Spawn Entities.
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 2; i++) {
         entities.push_back(new Entity(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20)));
     }
 
@@ -233,6 +237,7 @@ int main() {
         lastTime = nowTime;
 
         // Process input of the Scene
+        input->Update();
         processInput(window);
 
         // Updates entity in scene.
@@ -268,7 +273,7 @@ int main() {
     for (int i = 0; i < entities.size(); i++) {
         delete entities[i];
     }
-
+    delete input;
     glDeleteProgram(shaderProgram);
     glfwTerminate();
     return 0;
