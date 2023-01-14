@@ -24,7 +24,7 @@ class Collider
 public:
 	Collider(Entity* ent);
 	~Collider();
-	virtual CollisionInfo CheckCollision(Entity* target);
+	virtual CollisionInfo CheckCollision(Entity* target) = 0;
 	bool enabled;
 	Entity* entity;
 	CollisionType GetType();

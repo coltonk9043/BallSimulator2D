@@ -19,7 +19,7 @@ class Entity
 		~Entity();
 		void Update();
 		void CheckCollisions(std::vector<Entity*> ents);
-		void Render(float frameDelta);
+		void Render(double frameDelta);
 		void OnCollide(CollisionInfo collisionInfo);
 		Collider* GetCollider();
 		Vector2 position;

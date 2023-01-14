@@ -74,8 +74,8 @@ Vector2 Vector2::operator/(float const& val) const {
 }
 
 Vector2 Vector2::Normalized() {
-	float mag = sqrtf(this->x * this->x + this->y * this->y);
-	return Vector2(this->x / mag, this->y / mag);
+	double mag = 1.0 / sqrtf(x*x + y*y);
+	return Vector2(x * mag, y * mag);
 }
 
 float* Vector2::AsArray() {
@@ -95,9 +95,9 @@ void Vector2::Rotate(float angle)
 
 void Vector2::Normalize()
 {
-	float mag = sqrtf(this->x * this->x + this->y * this->y);
-	this->x = this->x / mag;
-	this->y = this->y / mag;
+	double mag = 1.0 / sqrtf(x*x + y*y);
+	this->x = x * mag;
+	this->y = y * mag;
 }
 
 void Vector2::Set(float x, float y) {

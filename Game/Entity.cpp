@@ -7,7 +7,8 @@
 Entity::Entity() {
 	this->position = Vector2(0.0f, 0.0f);
 	this->rotation = 0.0f;
-    this->mass = 1.0f;
+    this->radius = rand() % 35;
+    this->mass = std::_Pi * (radius * radius);
     this->color[0] = (float)((rand() * 1255) % 255) / 255.0f;
     this->color[1] = (float)((rand() * 631)% 255) / 255.0f;
     this->color[2] = (float)((rand() * 12519) % 255) / 255.0f;
@@ -22,7 +23,8 @@ Entity::Entity() {
 Entity::Entity(Vector2 position) {
 	this->position = position;
 	this->rotation = 0.0f;
-    this->mass = 1.0f;
+    this->radius = rand() % 35;
+    this->mass = std::_Pi * (radius * radius);
     this->color[0] = (float)(rand() % 255) / 255.0f;
     this->color[1] = (float)(rand() % 255) / 255.0f;
     this->color[2] = (float)(rand() % 255) / 255.0f;
@@ -38,7 +40,8 @@ Entity::Entity(Vector2 position) {
 Entity::Entity(Vector2 position, float rotation) {
 	this->position = position;
 	this->rotation = rotation;
-    this->mass = 1.0f;
+    this->radius = rand() % 35;
+    this->mass = std::_Pi * (radius * radius);
     this->color[0] = (float)(rand() % 255) / 255.0f;
     this->color[1] = (float)(rand() % 255) / 255.0f;
     this->color[2] = (float)(rand() % 255) / 255.0f;
@@ -56,7 +59,7 @@ Entity::~Entity() {
     glDeleteVertexArrays(1, &vao.index);
 }
 
-void Entity::Render(float frameDelta) {
+void Entity::Render(double frameDelta) {
     // Finish copying position into VAO data.
     Vector2 pos = this->position + ((this->velocity*frameDelta) * TIMESTEP);
     glBindVertexArray(vao.index);

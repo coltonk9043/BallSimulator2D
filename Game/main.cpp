@@ -7,6 +7,7 @@
 #include "Entity.h"
 #include <chrono>
 #include "Input.h"
+
 using timer = std::chrono::steady_clock;
 const char* title = "Particle Simulator";
 GLuint shaderProgram;
@@ -30,6 +31,7 @@ void createWindow(GLFWwindow*& window,
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+
 }
 
 /// <summary>
@@ -170,15 +172,15 @@ void processInput(GLFWwindow* window) {
     }
 
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        movement.x = -1.0f;
+        movement.x = -5.0f;
     }
     else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        movement.x = 1.0f;
+        movement.x = 5.0f;
     }
 
     for (int i = 0; i < entities.size(); i++) {
         entities[i]->position.y += movement.y;
-        entities[i]->force.x += 5* movement.x;
+        entities[i]->force.x += movement.x;
     }
 }
 
@@ -236,33 +238,30 @@ int main() {
         deltaTime += (nowTime - lastTime) * TICKS_PER_SECOND;
         lastTime = nowTime;
 
-        // Process input of the Scene
-        input->Update();
-        processInput(window);
-
         // Updates entity in scene.
         while (deltaTime >= 1.0) {
-            for (int i = 0; i < entities.size(); i++) {
-                entities[i]->Update();
-            }
+            // Process input of the Scene
+            input->Update();
+            processInput(window);
 
             for (int i = 0; i < entities.size(); i++) {
                 entities[i]->CheckCollisions(entities);
             }
+
+            for (int i = 0; i < entities.size(); i++) {
+                entities[i]->Update();
+            }
+
             deltaTime--;
         }
         
         // Clear the screen for a new frame.
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Render objects.
         for (int i = 0; i < entities.size(); i++) {
             entities[i]->Render(deltaTime);
         }
-
-        //GLenum errors = glGetError();
-        //if (errors == GL_NO_ERROR) std::cout << "[LOG] No Errors Reported.\n";
-        //else std::cout << "[ERROR] Errors found in OpenGL rendering.";
 
         // Swap Frame Buffers and poll for events.
         glfwSwapBuffers(window);

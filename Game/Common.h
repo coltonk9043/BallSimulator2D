@@ -15,6 +15,8 @@ const unsigned int SCREEN_WIDTH = 800;
 const unsigned int SCREEN_HEIGHT = 600;
 const bool FULLSCREEN = true;
 
+
+
 // structure for VAO storing Array Object and its Buffer Objects
 
 struct VAO {
