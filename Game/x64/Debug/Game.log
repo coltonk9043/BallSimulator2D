@@ -1,18 +1,6 @@
-﻿  Colliders.cpp
-C:\Code Projects\ParticleSimulator2D\Game\Colliders\Colliders.cpp(87,37): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
-  Entity.cpp
-C:\Code Projects\ParticleSimulator2D\Game\Entity.cpp(10,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Code Projects\ParticleSimulator2D\Game\Entity.cpp(11,27): warning C4244: '=': conversion from 'long double' to 'float', possible loss of data
-C:\Code Projects\ParticleSimulator2D\Game\Entity.cpp(26,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Code Projects\ParticleSimulator2D\Game\Entity.cpp(27,27): warning C4244: '=': conversion from 'long double' to 'float', possible loss of data
-C:\Code Projects\ParticleSimulator2D\Game\Entity.cpp(43,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Code Projects\ParticleSimulator2D\Game\Entity.cpp(44,27): warning C4244: '=': conversion from 'long double' to 'float', possible loss of data
-C:\Code Projects\ParticleSimulator2D\Game\Entity.cpp(64,53): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
-C:\Code Projects\ParticleSimulator2D\Game\Entity.cpp(136,32): warning C4018: '<': signed/unsigned mismatch
-  main.cpp
+﻿  main.cpp
 C:\Code Projects\ParticleSimulator2D\Game\main.cpp(158,53): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 C:\Code Projects\ParticleSimulator2D\Game\main.cpp(158,47): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 C:\Code Projects\ParticleSimulator2D\Game\main.cpp(228,98): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
 C:\Code Projects\ParticleSimulator2D\Game\main.cpp(228,69): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-  Generating Code...
   Game.vcxproj -> C:\Code Projects\ParticleSimulator2D\x64\Debug\Game.exe

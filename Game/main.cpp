@@ -180,7 +180,7 @@ void processInput(GLFWwindow* window) {
 
     for (int i = 0; i < entities.size(); i++) {
         entities[i]->position.y += movement.y;
-        entities[i]->force.x += movement.x;
+        entities[i]->force.x += movement.x * entities[i]->mass;
     }
 }
 

@@ -81,7 +81,6 @@ void Entity::Update() {
             if (this->position.y > SCREEN_HEIGHT - this->radius) {
                 this->velocity.y = -this->velocity.y * this->collider->getBounciness();
             }
-            this->force.Set(0, GRAVITY * this->mass);
         }
         if (this->position.x < this->radius) {
             this->position.x = this->radius;
@@ -91,6 +90,7 @@ void Entity::Update() {
             this->position.x = SCREEN_WIDTH - this->radius;
             this->velocity.x = -this->velocity.x * this->collider->getBounciness();
         }
+        this->force.Set(0, GRAVITY * this->mass);
     }
 }
 
