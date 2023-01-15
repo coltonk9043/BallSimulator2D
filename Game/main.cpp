@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include "Entity.h"
+#include "Entities/Entity.h"
 #include <chrono>
 #include "Input.h"
 
@@ -155,7 +155,7 @@ void processInput(GLFWwindow* window) {
     ypos = SCREEN_HEIGHT - ypos;
 
     if (input->getMouseButtonPressed(GLFW_MOUSE_BUTTON_1)) {
-        entities.push_back(new Entity(Vector2(xpos, ypos)));
+        entities.push_back(new EntityCircle(Vector2(xpos, ypos)));
     }
 
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -224,8 +224,11 @@ int main() {
     glUseProgram(shaderProgram);
 
     // Spawn Entities.
+    entities.push_back(new EntityBox(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20), rand() % 360));
+    entities.push_back(new EntityBox(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20), rand() % 360));
+
     for (int i = 0; i < 2; i++) {
-        entities.push_back(new Entity(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20)));
+        entities.push_back(new EntityCircle(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20)));
     }
 
     double lastTime = glfwGetTime();
@@ -260,7 +263,13 @@ int main() {
 
         // Render objects.
         for (int i = 0; i < entities.size(); i++) {
-            entities[i]->Render(deltaTime);
+            entities[i]->Render(shaderProgram, deltaTime);
+        }
+
+        GLenum err;
+        while ((err = glGetError()) != GL_NO_ERROR)
+        {
+            std::cout << err << "\n";
         }
 
         // Swap Frame Buffers and poll for events.

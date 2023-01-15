@@ -3,13 +3,14 @@
 #ifndef __COLLIDERS_H__
 #define __COLLIDERS_H__
 
-#include "../Entity.h"
+#include "../Entities/Entity.h"
 #include <cmath>
 
 using namespace std;
 
 enum CollisionType {
 	CIRCLE,
+	BOX,
 	POLYGON
 };
 
@@ -42,6 +43,7 @@ public:
 	CircleCollider(Entity* ent, float radius);
 	~CircleCollider();
 	CollisionInfo CheckCollision(Entity* target) override;
+	float getRadius();
 protected:
 	float radius;
 };
@@ -49,9 +51,11 @@ protected:
 class BoxCollider : public Collider
 {
 public:
-	BoxCollider(Entity* ent, float radius);
+	BoxCollider(Entity* ent, float length, float width);
 	~BoxCollider();
 	CollisionInfo CheckCollision(Entity* target) override;
+	float getWidth();
+	float getLength();
 protected:
 	float length;
 	float width;

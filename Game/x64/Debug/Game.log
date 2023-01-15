@@ -1,6 +1,9 @@
-﻿  main.cpp
-C:\Code Projects\ParticleSimulator2D\Game\main.cpp(158,53): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Code Projects\ParticleSimulator2D\Game\main.cpp(158,47): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Code Projects\ParticleSimulator2D\Game\main.cpp(228,98): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-C:\Code Projects\ParticleSimulator2D\Game\main.cpp(228,69): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+﻿  EntityBox.cpp
+C:\Code Projects\ParticleSimulator2D\Game\Entities\EntityBox.cpp(5,18): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Code Projects\ParticleSimulator2D\Game\Entities\EntityBox.cpp(6,17): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Code Projects\ParticleSimulator2D\Game\Entities\EntityBox.cpp(14,18): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Code Projects\ParticleSimulator2D\Game\Entities\EntityBox.cpp(15,17): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Code Projects\ParticleSimulator2D\Game\Entities\EntityBox.cpp(23,18): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Code Projects\ParticleSimulator2D\Game\Entities\EntityBox.cpp(24,17): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Code Projects\ParticleSimulator2D\Game\Entities\EntityBox.cpp(63,55): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
   Game.vcxproj -> C:\Code Projects\ParticleSimulator2D\x64\Debug\Game.exe
