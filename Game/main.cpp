@@ -219,9 +219,16 @@ int main() {
     glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
+    // Load shaders
     shaderProgram = compileShaderProgram("main.vs", "main.fs");
     setOrthographicProjection(shaderProgram, 0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 0.0f, 1.0f);
     glUseProgram(shaderProgram);
+
+
+    // AntiAliasing
+    glEnable(GL_DEPTH_TEST);
+    glfwWindowHint(GLFW_SAMPLES, 4);
+    glEnable(GL_MULTISAMPLE);
 
     // Spawn Entities.
     //entities.push_back(new EntityBox(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20), rand() % 360));
@@ -247,7 +254,6 @@ int main() {
             input->Update();
             processInput(window);
 
-
             for (int i = 0; i < entities.size(); i++) {
                 entities[i]->Update();
             }
@@ -267,11 +273,11 @@ int main() {
             entities[i]->Render(shaderProgram, deltaTime);
         }
 
-        GLenum err;
+       /* GLenum err;
         while ((err = glGetError()) != GL_NO_ERROR)
         {
             std::cout << err << "\n";
-        }
+        }*/
 
         // Swap Frame Buffers and poll for events.
         glfwSwapBuffers(window);
