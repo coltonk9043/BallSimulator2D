@@ -54,7 +54,7 @@ void EntityCircle::Render(GLuint shader, double frameDelta) {
     GLint offsetLocation = glGetUniformLocation(shader, "position");
     glUniform2f(offsetLocation, pos.x, pos.y);
 
-    glDrawElements(GL_TRIANGLES, 3 * numTriangles, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_LINES, 3 * numTriangles, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
 

@@ -224,8 +224,8 @@ int main() {
     glUseProgram(shaderProgram);
 
     // Spawn Entities.
-    entities.push_back(new EntityBox(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20), rand() % 360));
-    entities.push_back(new EntityBox(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20), rand() % 360));
+    //entities.push_back(new EntityBox(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20), rand() % 360));
+    //entities.push_back(new EntityBox(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20), rand() % 360));
 
     for (int i = 0; i < 2; i++) {
         entities.push_back(new EntityCircle(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20)));

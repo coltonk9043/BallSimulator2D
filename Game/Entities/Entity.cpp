@@ -75,6 +75,9 @@ void Entity::CheckCollisions(std::vector<Entity*> ents) {
     }
 }
 
+/// <summary>
+/// Update function. Performs Generic Entity update functions.
+/// </summary>
 void Entity::Update() {
     if (usePhysics) {
         // Pre-Update

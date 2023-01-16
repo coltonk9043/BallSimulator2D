@@ -1,24 +1,24 @@
 #include "Entity.h"
 
 EntityBox::EntityBox() : Entity() {
-    length = rand() % 35;
-    width = rand() % 35;
+    length = (rand() % 35) + 10;
+    width = (rand() % 35) + 10;
     this->mass = (length * width);
     this->usePhysics = false;
     PrepareModel();
 }
 
 EntityBox::EntityBox(Vector2 position) : Entity(position) {
-    float length = rand() % 35;
-    float width = rand() % 35;
+    float length = (rand() % 35) + 10;
+    float width = (rand() % 35) + 10;
     this->mass = (length * width);
     this->usePhysics = false;
     PrepareModel();
 }
 
 EntityBox::EntityBox(Vector2 position, float rotation) : Entity(position, rotation) {
-    float length = rand() % 35;
-    float width = rand() % 35;
+    float length = (rand() % 35) + 10;
+    float width = (rand() % 35) + 10;
     this->mass = (length * width);
     this->usePhysics = false;
     PrepareModel();
