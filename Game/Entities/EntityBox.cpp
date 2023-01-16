@@ -1,10 +1,8 @@
 #include "Entity.h"
-#include "../Colliders/Colliders.h"
 
 EntityBox::EntityBox() : Entity() {
-    float length = rand() % 35;
-    float width = rand() % 35;
-    this->collider = new BoxCollider(this, length, width);
+    length = rand() % 35;
+    width = rand() % 35;
     this->mass = (length * width);
     this->usePhysics = false;
     PrepareModel();
@@ -13,7 +11,6 @@ EntityBox::EntityBox() : Entity() {
 EntityBox::EntityBox(Vector2 position) : Entity(position) {
     float length = rand() % 35;
     float width = rand() % 35;
-    this->collider = new BoxCollider(this, length, width);
     this->mass = (length * width);
     this->usePhysics = false;
     PrepareModel();
@@ -22,40 +19,40 @@ EntityBox::EntityBox(Vector2 position) : Entity(position) {
 EntityBox::EntityBox(Vector2 position, float rotation) : Entity(position, rotation) {
     float length = rand() % 35;
     float width = rand() % 35;
-    this->collider = new BoxCollider(this, length, width);
     this->mass = (length * width);
     this->usePhysics = false;
     PrepareModel();
 }
 
 void EntityBox::Update() {
-    float length = ((BoxCollider*)this->collider)->getLength();
-    float width = ((BoxCollider*)this->collider)->getWidth();
-
     if (usePhysics) {
         // Entity Update
         this->velocity = this->velocity + (this->force / this->mass);
         this->position = this->position + (this->velocity * TIMESTEP);
 
         if (this->position.y  <= width / 2) {
-            this->velocity.y = -this->velocity.y * this->collider->getBounciness();
+            this->velocity.y = -this->velocity.y * this->bounciness;
             this->position.y = width / 2;
         }
         else {
             if (this->position.y > SCREEN_HEIGHT - width / 2) {
-                this->velocity.y = -this->velocity.y * this->collider->getBounciness();
+                this->velocity.y = -this->velocity.y * this->bounciness;
             }
         }
         if (this->position.x < length / 2) {
             this->position.x = length / 2;
-            this->velocity.x = -this->velocity.x * this->collider->getBounciness();
+            this->velocity.x = -this->velocity.x * this->bounciness;
         }
         else if (this->position.x > SCREEN_WIDTH - length / 2) {
             this->position.x = SCREEN_WIDTH - length / 2;
-            this->velocity.x = -this->velocity.x * this->collider->getBounciness();
+            this->velocity.x = -this->velocity.x * this->bounciness;
         }
         this->force.Set(0, GRAVITY * this->mass);
     }
+}
+
+void EntityBox::Collision(Entity* ent) {
+
 }
 
 void EntityBox::Render(GLuint shader, double frameDelta) {

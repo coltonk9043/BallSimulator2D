@@ -247,12 +247,13 @@ int main() {
             input->Update();
             processInput(window);
 
-            for (int i = 0; i < entities.size(); i++) {
-                entities[i]->CheckCollisions(entities);
-            }
 
             for (int i = 0; i < entities.size(); i++) {
                 entities[i]->Update();
+            }
+
+            for (int i = 0; i < entities.size(); i++) {
+                entities[i]->CheckCollisions(entities);
             }
 
             deltaTime--;

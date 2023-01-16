@@ -1,5 +1,4 @@
 #include "Entity.h"
-#include "../Colliders/Colliders.h"
 
 /// <summary>
 /// Entity Constructor with no parameters. Spawns at 0, 0 with a random colour.
@@ -7,7 +6,7 @@
 Entity::Entity() {
 	this->position = Vector2(0.0f, 0.0f);
 	this->rotation = 0.0f;
-    this->mass = 0;
+    this->mass = 1;
     this->color[0] = (float)((rand() * 1255) % 255) / 255.0f;
     this->color[1] = (float)((rand() * 631)% 255) / 255.0f;
     this->color[2] = (float)((rand() * 12519) % 255) / 255.0f;
@@ -20,7 +19,7 @@ Entity::Entity() {
 Entity::Entity(Vector2 position) {
 	this->position = position;
 	this->rotation = 0.0f;
-    this->mass = 0;
+    this->mass = 1;
     this->color[0] = (float)(rand() % 255) / 255.0f;
     this->color[1] = (float)(rand() % 255) / 255.0f;
     this->color[2] = (float)(rand() % 255) / 255.0f;
@@ -34,7 +33,7 @@ Entity::Entity(Vector2 position) {
 Entity::Entity(Vector2 position, float rotation) {
 	this->position = position;
 	this->rotation = rotation;
-    this->mass = 0;
+    this->mass = 1;
     this->color[0] = (float)(rand() % 255) / 255.0f;
     this->color[1] = (float)(rand() % 255) / 255.0f;
     this->color[2] = (float)(rand() % 255) / 255.0f;
@@ -50,15 +49,14 @@ Entity::~Entity() {
     glDeleteVertexArrays(1, &vao.index);
 }
 
+float Entity::getBounciness() {
+    return this->bounciness;
+}
 
 void Entity::CheckCollisions(std::vector<Entity*> ents) {
     for (int i = 0; i < ents.size(); i++) {
         Entity* ent = ents[i];
         if (ent == this) continue;
-        CollisionInfo collision = this->collider->CheckCollision(ent);
+        this->Collision(ent);
     }
-}
-
-Collider* Entity::GetCollider() {
-    return this->collider;
 }

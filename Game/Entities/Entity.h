@@ -8,8 +8,6 @@
 #include "../Common.h"
 
 
-class Collider;
-struct CollisionInfo;
 
 class Entity
 {
@@ -20,20 +18,24 @@ class Entity
 		~Entity();
 		virtual void Update() = 0;
 		void CheckCollisions(std::vector<Entity*> ents);
+		virtual void Collision(Entity* ent) = 0;
 		virtual void Render(GLuint shaderProgram, double frameDelta) = 0;
-		Collider* GetCollider();
+		float getBounciness();
 		Vector2 position;
 		Vector2 velocity;
 		Vector2 force;
 		float rotation;
 		float mass;
 		float color[3];
+		EntityType type;
 	private:
 		virtual void PrepareModel() = 0;
 	protected:
 		VAO vao;
 		bool  usePhysics = true;
-		Collider* collider;
+		float bounciness = 0.85f;
+		float friction = 0.05f;
+		float deactivation = 0.05f;
 };
 
 class EntityCircle : public Entity
@@ -45,9 +47,11 @@ public:
 	~EntityCircle();
 	void Update() override;
 	void Render(GLuint shaderProgram, double frameDelta) override;
+	void Collision(Entity* ent) override;
 private:
 	void PrepareModel() override;
 	int numTriangles = 20;
+	float radius;
 };
 
 class EntityBox : public Entity
@@ -59,8 +63,11 @@ public:
 	~EntityBox();
 	void Update() override;
 	void Render(GLuint shaderProgram, double frameDelta) override;
+	void Collision(Entity* ent) override;
 private:
 	void PrepareModel() override;
+	float width;
+	float length;
 };
 
 

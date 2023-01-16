@@ -151,7 +151,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Colliders\Colliders.cpp" />
     <ClCompile Include="Entities\Entity.cpp" />
     <ClCompile Include="Entities\EntityCircle.cpp" />
     <ClCompile Include="Entities\EntityBox.cpp" />
@@ -166,7 +165,6 @@
     <None Include="main.vs" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Colliders\Colliders.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Entities\Entity.h" />
     <ClInclude Include="Input.h" />

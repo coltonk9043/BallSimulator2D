@@ -32,6 +32,7 @@ public:
     float CrossProduct(const Vector2& rhs) const;
 	float DotProduct(const Vector2& rhs) const;
     float Magnitude();
+	float MagnitudeSqr();
 	void Rotate(float angle);
 	Vector2 Normalized();
 	void Normalize();

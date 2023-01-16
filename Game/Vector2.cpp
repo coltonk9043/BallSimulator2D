@@ -115,6 +115,10 @@ float Vector2::Magnitude()
 	return sqrtf(this->x * this->x + this->y * this->y);
 }
 
+float Vector2::MagnitudeSqr() {
+	return (this->x * this->x + this->y * this->y);
+}
+
 float Vector2::DotProduct(const Vector2& obj) const
 {
 	return (this->x * obj.x) + (this->y * obj.y);

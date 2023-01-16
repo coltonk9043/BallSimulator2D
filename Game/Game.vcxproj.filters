@@ -27,9 +27,6 @@
     <ClCompile Include="Vector2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Colliders\Colliders.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -53,9 +50,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Vector2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Colliders\Colliders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
