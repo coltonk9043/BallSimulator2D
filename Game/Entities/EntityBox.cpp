@@ -1,25 +1,28 @@
 #include "Entity.h"
 
 EntityBox::EntityBox() : Entity() {
-    length = (rand() % 35) + 10;
-    width = (rand() % 35) + 10;
+    length = (rand() % 50) + 200;
+    width = (rand() % 10) + 20;
     this->mass = (length * width);
+    this->type = BOX;
     this->usePhysics = false;
     PrepareModel();
 }
 
 EntityBox::EntityBox(Vector2 position) : Entity(position) {
-    float length = (rand() % 35) + 10;
-    float width = (rand() % 35) + 10;
+    length = (rand() % 50) + 200;
+    width = (rand() % 10) + 20;
     this->mass = (length * width);
+    this->type = BOX;
     this->usePhysics = false;
     PrepareModel();
 }
 
 EntityBox::EntityBox(Vector2 position, float rotation) : Entity(position, rotation) {
-    float length = (rand() % 35) + 10;
-    float width = (rand() % 35) + 10;
+    length = (rand() % 50) + 200;
+    width = (rand() % 10) + 20;
     this->mass = (length * width);
+    this->type = BOX;
     this->usePhysics = false;
     PrepareModel();
 }
@@ -65,10 +68,10 @@ void EntityBox::Render(GLuint shader, double frameDelta) {
 }
 
 void EntityBox::PrepareModel() {
-    float vertices[]{ -0.5f, -0.5f, //0 -> Bottom Left
-                      -0.5f,  0.5f, //1 -> Top Left
-                      0.5f, -0.5f, //2 -> Bottom Right
-                      0.5f, 0.5f };//3 -> Top Right
+    float vertices[]{ -length * 0.5f, -width *0.5f, //0 -> Bottom Left
+                      -length * 0.5f,  width * 0.5f, //1 -> Top Left
+                      length * 0.5f, -width *0.5f, //2 -> Bottom Right
+                      length * 0.5f, width * 0.5f }; //3 -> Top Right
 
     float colors[]{
         color[0], color[1], color[2], // top left point
@@ -86,14 +89,14 @@ void EntityBox::PrepareModel() {
     glGenBuffers(1, &vao.verticesVBO);
     glBindBuffer(GL_ARRAY_BUFFER, vao.verticesVBO);
     glBufferData(GL_ARRAY_BUFFER,  sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertices), (void*)(0 * sizeof(float)));
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(0);
 
     // Color VBO
     glGenBuffers(1, &vao.colorVBO);
     glBindBuffer(GL_ARRAY_BUFFER, vao.colorVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(colors), (void*)(0 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(1);
 
     // Indices VBO

@@ -179,6 +179,7 @@ void processInput(GLFWwindow* window) {
     }
 
     for (int i = 0; i < entities.size(); i++) {
+        if (entities[i]->type == BOX) continue;
         entities[i]->position.y += movement.y;
         entities[i]->force.x += movement.x * entities[i]->mass;
     }
@@ -231,8 +232,8 @@ int main() {
     glEnable(GL_MULTISAMPLE);
 
     // Spawn Entities.
-    //entities.push_back(new EntityBox(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20), rand() % 360));
-    //entities.push_back(new EntityBox(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20), rand() % 360));
+    entities.push_back(new EntityBox(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20), rand() % 360));
+    entities.push_back(new EntityBox(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20), rand() % 360));
 
     for (int i = 0; i < 2; i++) {
         entities.push_back(new EntityCircle(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20)));

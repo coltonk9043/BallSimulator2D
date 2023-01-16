@@ -21,8 +21,7 @@ enum EntityType {
     POLYGON
 };
 
-// structure for VAO storing Array Object and its Buffer Objects
-
+// Structure for VAO storing Array Object and its Buffer Objects
 struct VAO {
     GLuint index;
     GLuint verticesVBO;

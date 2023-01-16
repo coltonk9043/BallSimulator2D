@@ -73,14 +73,13 @@ void EntityCircle::Collision(Entity* ent) {
         */
         if (distance_sqr <= sum_radius_sqr) {
             Vector2 midpoint = Vector2((this->position.x + ent->position.x) * 0.5f, (this->position.y + ent->position.y) * 0.5f);
-            this->position.Set(midpoint.x + this->radius * (this->position.x - ent->position.x) / distance, midpoint.y + col->radius * (this->position.y - ent->position.y) / distance);
+            this->position.Set(midpoint.x + this->radius * (this->position.x - ent->position.x) / distance, midpoint.y + this->radius * (this->position.y - ent->position.y) / distance);
             ent->position.Set(midpoint.x + col->radius * (ent->position.x - this->position.x) / distance, midpoint.y + col->radius * (ent->position.y - this->position.y) / distance);
         }
 
         /*
         // Dynamic Collision Detection.
-        */ 
-
+        */
         // Gets the sum of the radius and subtracts it from the distance.
         float distance_radius = distance - sum_radius;
 
@@ -97,10 +96,9 @@ void EntityCircle::Collision(Entity* ent) {
 
         // Get the magnitude of the difference between the entities position.
         double d = distance_sqr - (dot * dot);
-        
         if (d >= sum_radius_sqr) return;
 
-
+        // Get the 
         double T = sum_radius_sqr - d;
         if (T < 0) return;
 
