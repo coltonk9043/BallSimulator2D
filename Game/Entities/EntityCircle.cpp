@@ -21,35 +21,28 @@ EntityCircle::EntityCircle(Vector2 position, float rotation) : Entity(position, 
 	PrepareModel();
 }
 
-void EntityCircle::Update() {
-    if (usePhysics) {
-        // Entity Update
-        this->velocity = this->velocity + (this->force / this->mass);
-        this->position = this->position + (this->velocity * TIMESTEP);
 
-        if (this->position.y <= radius) {
+void EntityCircle::PreUpdate() {
+
+}
+
+void EntityCircle::PostUpdate() {
+    if (this->position.y <= radius) {
+        this->velocity.y = -this->velocity.y * this->bounciness;
+        this->position.y = radius;
+    }
+    else {
+        if (this->position.y > SCREEN_HEIGHT - radius) {
             this->velocity.y = -this->velocity.y * this->bounciness;
-            this->position.y = radius;
         }
-        else {
-            if (this->position.y > SCREEN_HEIGHT - radius) {
-                this->velocity.y = -this->velocity.y * this->bounciness;
-            }
-        }
-        if (this->position.x < radius) {
-            this->position.x = radius;
-            this->velocity.x = -this->velocity.x * this->bounciness;
-        }
-        else if (this->position.x > SCREEN_WIDTH - radius) {
-            this->position.x = SCREEN_WIDTH - radius;
-            this->velocity.x = -this->velocity.x * this->bounciness;
-        }
-        this->force.Set(0, GRAVITY * this->mass);
-
-        if (std::fabs(this->velocity.MagnitudeSqr()) < deactivation)
-        {
-            this->velocity.Set(0.0f, 0.0f);
-        }
+    }
+    if (this->position.x < radius) {
+        this->position.x = radius;
+        this->velocity.x = -this->velocity.x * this->bounciness;
+    }
+    else if (this->position.x > SCREEN_WIDTH - radius) {
+        this->position.x = SCREEN_WIDTH - radius;
+        this->velocity.x = -this->velocity.x * this->bounciness;
     }
 }
 
@@ -79,7 +72,7 @@ void EntityCircle::Collision(Entity* ent) {
         // Static Collision Detection
         */
         if (distance_sqr <= sum_radius_sqr) {
-            Vector2 midpoint = Vector2((this->position.x + ent->position.x) / 2, (this->position.y + ent->position.y) / 2);
+            Vector2 midpoint = Vector2((this->position.x + ent->position.x) * 0.5f, (this->position.y + ent->position.y) * 0.5f);
             this->position.Set(midpoint.x + this->radius * (this->position.x - ent->position.x) / distance, midpoint.y + col->radius * (this->position.y - ent->position.y) / distance);
             ent->position.Set(midpoint.x + col->radius * (ent->position.x - this->position.x) / distance, midpoint.y + col->radius * (ent->position.y - this->position.y) / distance);
         }

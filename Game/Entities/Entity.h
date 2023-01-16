@@ -16,7 +16,7 @@ class Entity
 		Entity(Vector2 position);
 		Entity(Vector2 position, float rotation);
 		~Entity();
-		virtual void Update() = 0;
+		void Update();
 		void CheckCollisions(std::vector<Entity*> ents);
 		virtual void Collision(Entity* ent) = 0;
 		virtual void Render(GLuint shaderProgram, double frameDelta) = 0;
@@ -36,6 +36,8 @@ class Entity
 		float bounciness = 0.85f;
 		float friction = 0.05f;
 		float deactivation = 0.05f;
+		virtual void PreUpdate() = 0;
+		virtual void PostUpdate() = 0;
 };
 
 class EntityCircle : public Entity
@@ -45,13 +47,15 @@ public:
 	EntityCircle(Vector2 position);
 	EntityCircle(Vector2 position, float rotation);
 	~EntityCircle();
-	void Update() override;
 	void Render(GLuint shaderProgram, double frameDelta) override;
 	void Collision(Entity* ent) override;
 private:
 	void PrepareModel() override;
+	void PreUpdate() override;
+	void PostUpdate() override;
 	int numTriangles = 20;
 	float radius;
+
 };
 
 class EntityBox : public Entity
@@ -61,11 +65,12 @@ public:
 	EntityBox(Vector2 position);
 	EntityBox(Vector2 position, float rotation);
 	~EntityBox();
-	void Update() override;
 	void Render(GLuint shaderProgram, double frameDelta) override;
 	void Collision(Entity* ent) override;
 private:
 	void PrepareModel() override;
+	void PreUpdate() override;
+	void PostUpdate() override;
 	float width;
 	float length;
 };

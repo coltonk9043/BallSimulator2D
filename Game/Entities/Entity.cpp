@@ -1,3 +1,9 @@
+/*
+Colton Kennedy
+A class acting as a generic Entity.
+1/16/2023
+*/
+
 #include "Entity.h"
 
 /// <summary>
@@ -49,14 +55,44 @@ Entity::~Entity() {
     glDeleteVertexArrays(1, &vao.index);
 }
 
+/// <summary>
+/// Returns the bounciness factor of the Entity.
+/// </summary>
+/// <returns>Bounciness Factor.</returns>
 float Entity::getBounciness() {
     return this->bounciness;
 }
 
+/// <summary>
+/// Performs collision checks on a list of Entities.
+/// </summary>
+/// <param name="ents">The list of Entities to be checked.</param>
 void Entity::CheckCollisions(std::vector<Entity*> ents) {
     for (int i = 0; i < ents.size(); i++) {
         Entity* ent = ents[i];
         if (ent == this) continue;
         this->Collision(ent);
+    }
+}
+
+void Entity::Update() {
+    if (usePhysics) {
+        // Pre-Update
+        this->PreUpdate();
+
+        // Entity Update
+        this->velocity = this->velocity + (this->force / this->mass);
+        this->position = this->position + (this->velocity * TIMESTEP);
+        
+        // Post-Update
+        this->PostUpdate();
+
+        // Gravity
+        this->force.Set(0, GRAVITY * this->mass);
+
+        if (std::fabs(this->velocity.MagnitudeSqr()) < deactivation)
+        {
+            this->velocity.Set(0.0f, 0.0f);
+        }
     }
 }
