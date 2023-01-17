@@ -16,6 +16,7 @@ Entity::Entity() {
     this->color[0] = (float)((rand() * 1255) % 255) / 255.0f;
     this->color[1] = (float)((rand() * 631)% 255) / 255.0f;
     this->color[2] = (float)((rand() * 12519) % 255) / 255.0f;
+    this->kinematic = ((rand() % 2) - 1) == 0;
 }
 
 /// <summary>
@@ -29,6 +30,7 @@ Entity::Entity(Vector2 position) {
     this->color[0] = (float)(rand() % 255) / 255.0f;
     this->color[1] = (float)(rand() % 255) / 255.0f;
     this->color[2] = (float)(rand() % 255) / 255.0f;
+    this->kinematic = ((rand() % 2) - 1) == 0;
 }
 
 /// <summary>
@@ -43,6 +45,7 @@ Entity::Entity(Vector2 position, float rotation) {
     this->color[0] = (float)(rand() % 255) / 255.0f;
     this->color[1] = (float)(rand() % 255) / 255.0f;
     this->color[2] = (float)(rand() % 255) / 255.0f;
+    this->kinematic = ((rand() % 2) - 1) == 0;
 }
 
 /// <summary>
@@ -63,6 +66,10 @@ float Entity::getBounciness() {
     return this->bounciness;
 }
 
+bool Entity::isKinematic() {
+    return this->kinematic;
+}
+
 /// <summary>
 /// Performs collision checks on a list of Entities.
 /// </summary>
@@ -79,7 +86,7 @@ void Entity::CheckCollisions(std::vector<Entity*> ents) {
 /// Update function. Performs Generic Entity update functions.
 /// </summary>
 void Entity::Update() {
-    if (usePhysics) {
+    if (!kinematic) {
         // Pre-Update
         this->PreUpdate();
 

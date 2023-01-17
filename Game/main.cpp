@@ -136,15 +136,10 @@ int compileShaderProgram(const char* vertexShaderPath, const char* fragmentShade
 
 // set projection
 void setOrthographicProjection(int shaderProgram, float left, float right, float bottom, float top, float near, float far) {
-    float mat[4][4] = {
-        { 2.0f / (right - left), 0.0f, 0.0f, 0.0f },
-        { 0.0f, 2.0f / (top - bottom), 0.0f, 0.0f },
-        { 0.0f, 0.0f, -2.0f / (far - near), 0.0f },
-        { -(right + left) / (right - left), -(top + bottom) / (top - bottom), -(far + near) / (far - near), 1.0f }
-    };
+    Matrix4 mat = Matrix4::Orthographic(left, right, bottom, top, near, far);
 
     glUseProgram(shaderProgram);
-    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, &mat[0][0]);
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, mat.AsArray());
 }
 
 // process input
@@ -164,6 +159,7 @@ void processInput(GLFWwindow* window) {
 
     // Moves all balls.
     Vector2 movement (0.0f, 0.0f);
+    float rotation = 0.0f;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
         movement.y = 5.0f;
     }
@@ -178,10 +174,21 @@ void processInput(GLFWwindow* window) {
         movement.x = 5.0f;
     }
 
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+        rotation = 1.0f;
+    }
+    else if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+        rotation = -1.0f;
+    }
+ 
     for (int i = 0; i < entities.size(); i++) {
-        if (entities[i]->type == BOX) continue;
-        entities[i]->position.y += movement.y;
-        entities[i]->force.x += movement.x * entities[i]->mass;
+        if (!entities[i]->isKinematic()) {
+            entities[i]->position.y += movement.y;
+            entities[i]->force.x += movement.x * entities[i]->mass;
+        }
+        
+        if(entities[i]->type == BOX)
+            entities[i]->rotation += rotation;
     }
 }
 
@@ -232,9 +239,8 @@ int main() {
     glEnable(GL_MULTISAMPLE);
 
     // Spawn Entities.
-    entities.push_back(new EntityBox(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20), rand() % 360));
-    entities.push_back(new EntityBox(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20), rand() % 360));
-
+    entities.push_back(new EntityBox(Vector2(rand() % SCREEN_WIDTH * 0.8f, rand() % SCREEN_HEIGHT - 200), rand() % 360));
+    
     for (int i = 0; i < 2; i++) {
         entities.push_back(new EntityCircle(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20)));
     }

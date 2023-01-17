@@ -48,17 +48,28 @@ void EntityCircle::PostUpdate() {
 
 void EntityCircle::Render(GLuint shader, double frameDelta) {
     // Finish copying position into VAO data.
-    Vector2 pos = this->position + ((this->velocity * frameDelta) * TIMESTEP);
+    Vector2 pos = this->position;
+    if(!this->kinematic)
+        pos = this->position + ((this->velocity * frameDelta) * TIMESTEP);
     glBindVertexArray(vao.index);
 
     GLint offsetLocation = glGetUniformLocation(shader, "position");
     glUniform2f(offsetLocation, pos.x, pos.y);
+
+    Matrix4 model = Matrix4();
+    model.RotateZ(this->rotation);
+    model.Translate(this->position.x, this->position.y, 0.0f);
+
+    GLint offsetModel = glGetUniformLocation(shader, "model");
+    glUniformMatrix4fv(offsetModel, 1, GL_FALSE,model.AsArray());
 
     glDrawElements(GL_TRIANGLES, 3 * numTriangles, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
 
 void EntityCircle::Collision(Entity* ent) {
+    if (this->kinematic) return;
+
     if (ent->type == CIRCLE) {
         EntityCircle* col = (EntityCircle*)ent;
 
@@ -73,8 +84,10 @@ void EntityCircle::Collision(Entity* ent) {
         */
         if (distance_sqr <= sum_radius_sqr) {
             Vector2 midpoint = Vector2((this->position.x + ent->position.x) * 0.5f, (this->position.y + ent->position.y) * 0.5f);
+          
             this->position.Set(midpoint.x + this->radius * (this->position.x - ent->position.x) / distance, midpoint.y + this->radius * (this->position.y - ent->position.y) / distance);
-            ent->position.Set(midpoint.x + col->radius * (ent->position.x - this->position.x) / distance, midpoint.y + col->radius * (ent->position.y - this->position.y) / distance);
+            if(!ent->isKinematic())
+                ent->position.Set(midpoint.x + col->radius * (ent->position.x - this->position.x) / distance, midpoint.y + col->radius * (ent->position.y - this->position.y) / distance);
         }
 
         /*
@@ -110,9 +123,7 @@ void EntityCircle::Collision(Entity* ent) {
         // Get the magnitude of the movement vector
         double mag = timestepped_velocity.Magnitude();
 
-        // Finally, make sure that the distance A has to move
-        // to touch B is not greater than the magnitude of the
-        // movement vector.
+        // Ensure that the distance required is not bigger than the magnitude of the velocity vector.
         if (mag < distance_radius) {
             return;
         }
@@ -135,7 +146,37 @@ void EntityCircle::Collision(Entity* ent) {
         ent->velocity.Set(tangent.x * dotTan2 + normal.x * m2, tangent.y * dotTan2 + normal.y * m2);
     }
     else if (ent->type == BOX) {
+        EntityBox* col = (EntityBox*)ent;
 
+        float angleRadians = ent->rotation * ANGLE_TO_RADIANS;
+
+        float cos = std::cosf(angleRadians);
+        float sin = std::sinf(angleRadians);
+
+        float unrotatedCircleX = cos * (this->position.x - ent->position.x) - sin * (this->position.y - ent->position.y) + ent->position.x;
+        float unrotatedCircleY = sin * (this->position.x - ent->position.x) + cos * (this->position.y - ent->position.y) + ent->position.y;
+
+        // temporary variables to set edges for testing
+        float testX = this->position.x;
+        float testY = this->position.y;
+
+        // which edge is closest?
+        if (unrotatedCircleX < ent->position.x - col->getLength()*0.5f) testX = ent->position.x - col->getLength() * 0.5f;      // test left edge
+        else if (unrotatedCircleX > ent->position.x + col->getLength() * 0.5f) testX = ent->position.x + col->getLength() * 0.5f;   // right edge
+        if (unrotatedCircleY < ent->position.y - col->getWidth() * 0.5f)         testY = ent->position.y - col->getWidth() * 0.5f;      // top edge
+        else if (unrotatedCircleY > ent->position.y + col->getWidth() * 0.5f) testY = ent->position.y + col->getWidth() * 0.5f;   // bottom edge
+
+        // get distance from closest edges
+        Vector2 difference = Vector2(unrotatedCircleX - testX, unrotatedCircleY - testY);
+        float distance_sqr = difference.MagnitudeSqr();
+
+        // if the distance is less than the radius, collision!
+        if (distance_sqr <= (radius * radius)) {
+            std::cout << "COLLIDED\n";
+        }
+        else {
+            std::cout << "NOT COLLIDED\n";
+        }
     }
 }
 
@@ -188,14 +229,14 @@ void EntityCircle::PrepareModel() {
     glGenBuffers(1, &vao.verticesVBO);
     glBindBuffer(GL_ARRAY_BUFFER, vao.verticesVBO);
     glBufferData(GL_ARRAY_BUFFER, 2 * (numTriangles + 1) * sizeof(float), vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)(0 * sizeof(float)));
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
     // Color VBO
     glGenBuffers(1, &vao.colorVBO);
     glBindBuffer(GL_ARRAY_BUFFER, vao.colorVBO);
     glBufferData(GL_ARRAY_BUFFER, 3 * (numTriangles + 1) * sizeof(float), colors, GL_STATIC_DRAW);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)(0 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(1);
 
     // Indices VBO

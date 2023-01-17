@@ -21,6 +21,7 @@ class Entity
 		virtual void Collision(Entity* ent) = 0;
 		virtual void Render(GLuint shaderProgram, double frameDelta) = 0;
 		float getBounciness();
+		bool isKinematic();
 		Vector2 position;
 		Vector2 velocity;
 		Vector2 force;
@@ -32,7 +33,7 @@ class Entity
 		virtual void PrepareModel() = 0;
 	protected:
 		VAO vao;
-		bool  usePhysics = true;
+		bool kinematic = true;
 		float bounciness = 0.85f;
 		float friction = 0.05f;
 		float deactivation = 0.05f;
@@ -67,6 +68,8 @@ public:
 	~EntityBox();
 	void Render(GLuint shaderProgram, double frameDelta) override;
 	void Collision(Entity* ent) override;
+	float getWidth();
+	float getLength();
 private:
 	void PrepareModel() override;
 	void PreUpdate() override;

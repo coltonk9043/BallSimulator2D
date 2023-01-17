@@ -3,27 +3,30 @@
 EntityBox::EntityBox() : Entity() {
     length = (rand() % 50) + 200;
     width = (rand() % 10) + 20;
+    rotation = (rand() % 360);
     this->mass = (length * width);
     this->type = BOX;
-    this->usePhysics = false;
+    this->kinematic = true;
     PrepareModel();
 }
 
 EntityBox::EntityBox(Vector2 position) : Entity(position) {
     length = (rand() % 50) + 200;
     width = (rand() % 10) + 20;
+    rotation = (rand() % 360);
     this->mass = (length * width);
     this->type = BOX;
-    this->usePhysics = false;
+    this->kinematic = true;
     PrepareModel();
 }
 
 EntityBox::EntityBox(Vector2 position, float rotation) : Entity(position, rotation) {
     length = (rand() % 50) + 200;
     width = (rand() % 10) + 20;
+    rotation = (rand() % 360);
     this->mass = (length * width);
     this->type = BOX;
-    this->usePhysics = false;
+    this->kinematic = true;
     PrepareModel();
 }
 
@@ -63,6 +66,13 @@ void EntityBox::Render(GLuint shader, double frameDelta) {
     GLint offsetLocation = glGetUniformLocation(shader, "position");
     glUniform2f(offsetLocation, pos.x, pos.y);
 
+    Matrix4 model = Matrix4();
+    model.RotateZ(this->rotation);
+    model.Translate(this->position.x, this->position.y, 0.0f);
+
+    GLint offsetModel = glGetUniformLocation(shader, "model");
+    glUniformMatrix4fv(offsetModel, 1, GL_FALSE, model.AsArray());
+
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
@@ -89,14 +99,14 @@ void EntityBox::PrepareModel() {
     glGenBuffers(1, &vao.verticesVBO);
     glBindBuffer(GL_ARRAY_BUFFER, vao.verticesVBO);
     glBufferData(GL_ARRAY_BUFFER,  sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0);
     glEnableVertexAttribArray(0);
 
     // Color VBO
     glGenBuffers(1, &vao.colorVBO);
     glBindBuffer(GL_ARRAY_BUFFER, vao.colorVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
     glEnableVertexAttribArray(1);
 
     // Indices VBO
@@ -107,4 +117,12 @@ void EntityBox::PrepareModel() {
     // unbind VBO and VAO
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+}
+
+float EntityBox::getWidth() {
+    return this->width;
+}
+
+float EntityBox::getLength() {
+    return this->length;
 }
