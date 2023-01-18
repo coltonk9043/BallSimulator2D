@@ -1,12 +1,21 @@
 ﻿  EntityCircle.cpp
-C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Common.h(19,49): warning C4305: 'initializing': truncation from 'long double' to 'float'
-C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Common.h(20,50): warning C4305: 'initializing': truncation from 'long double' to 'float'
-C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Entities\EntityCircle.cpp(4,34): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Entities\EntityCircle.cpp(5,24): warning C4244: '=': conversion from 'long double' to 'float', possible loss of data
-C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Entities\EntityCircle.cpp(11,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Entities\EntityCircle.cpp(12,24): warning C4244: '=': conversion from 'long double' to 'float', possible loss of data
-C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Entities\EntityCircle.cpp(18,34): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Entities\EntityCircle.cpp(19,24): warning C4244: '=': conversion from 'long double' to 'float', possible loss of data
-C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Entities\EntityCircle.cpp(53,51): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
-C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Entities\EntityCircle.cpp(203,32): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Common.h(26,49): warning C4305: 'initializing': truncation from 'long double' to 'float'
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Common.h(27,50): warning C4305: 'initializing': truncation from 'long double' to 'float'
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Entities\EntityCircle.cpp(7,34): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Entities\EntityCircle.cpp(9,24): warning C4244: '=': conversion from 'long double' to 'float', possible loss of data
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Entities\EntityCircle.cpp(18,31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Entities\EntityCircle.cpp(20,24): warning C4244: '=': conversion from 'long double' to 'float', possible loss of data
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Entities\EntityCircle.cpp(30,34): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Entities\EntityCircle.cpp(32,24): warning C4244: '=': conversion from 'long double' to 'float', possible loss of data
+  main.cpp
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Common.h(26,49): warning C4305: 'initializing': truncation from 'long double' to 'float'
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\Common.h(27,50): warning C4305: 'initializing': truncation from 'long double' to 'float'
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\main.cpp(158,59): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\main.cpp(158,53): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\main.cpp(161,54): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\main.cpp(161,48): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\main.cpp(296,99): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\main.cpp(299,104): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\Colton\Desktop\ParticleSimulator2D\Game\main.cpp(299,75): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+  Generating Code...
   Game.vcxproj -> C:\Users\Colton\Desktop\ParticleSimulator2D\x64\Debug\Game.exe

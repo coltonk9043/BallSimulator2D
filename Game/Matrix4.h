@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef MATRIX4_H
+#define MATRIX4_H
+
 class Matrix4
 {
 public:
@@ -21,3 +25,4 @@ private:
 	float data[16];
 };
 
+#endif

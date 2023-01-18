@@ -1,18 +1,24 @@
 #include "Common.h"
 
 #include <string>
-#include <iostream>
 #include <sstream>
 #include <fstream>
 #include "Entities/Entity.h"
 #include <chrono>
 #include "Input.h"
+#include "Mesh.h"
+
+#define BACKEND "alut"
 
 using timer = std::chrono::steady_clock;
 const char* title = "Particle Simulator";
 GLuint shaderProgram;
 Input* input;
 std::vector<Entity*> entities;
+
+// Meshes
+Mesh* circleMesh;
+Mesh* boxMesh;
 
 /// <summary>
 /// Creates a Window with a given title, width, and height.
@@ -31,7 +37,6 @@ void createWindow(GLFWwindow*& window,
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
 }
 
 /// <summary>
@@ -150,7 +155,12 @@ void processInput(GLFWwindow* window) {
     ypos = SCREEN_HEIGHT - ypos;
 
     if (input->getMouseButtonPressed(GLFW_MOUSE_BUTTON_1)) {
-        entities.push_back(new EntityCircle(Vector2(xpos, ypos)));
+        entities.push_back(new EntityCircle(Vector2(xpos, ypos), circleMesh));
+    }
+    else if (input->getMouseButtonPressed(GLFW_MOUSE_BUTTON_2)) {
+        Entity* ent = new EntityCircle(Vector2(xpos, ypos), circleMesh);
+        ent->setKinematic(true);
+        entities.push_back(ent);
     }
 
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -183,13 +193,53 @@ void processInput(GLFWwindow* window) {
  
     for (int i = 0; i < entities.size(); i++) {
         if (!entities[i]->isKinematic()) {
-            entities[i]->position.y += movement.y;
+            entities[i]->force.y += movement.y * -GRAVITY * entities[i]->mass;
             entities[i]->force.x += movement.x * entities[i]->mass;
         }
         
         if(entities[i]->type == BOX)
             entities[i]->rotation += rotation;
     }
+}
+
+void prepareCircleModel() {
+    std::vector<GLfloat> vertices;
+    std::vector<GLuint> indices;
+
+    // set origin
+    vertices.push_back(0.0f);
+    vertices.push_back(0.0f);
+
+    float pi = 4 * atanf(1.0f);
+    float theta = 0.0f;
+
+    unsigned int i;
+    for (i = 0; i <= TRIANGLE_RESOLUTION; i++) {
+        // set vertices
+        vertices.push_back(cosf(theta));
+        vertices.push_back(sinf(theta));
+
+        // set indices
+        indices.push_back(0);
+        indices.push_back(i + 1);
+        indices.push_back(i + 2);
+
+        // step up theta
+        theta += 2 * pi / TRIANGLE_RESOLUTION;
+    }
+
+    circleMesh = new Mesh(vertices, indices);
+}
+
+void prepareBoxModel() {
+    std::vector<GLfloat> vertices{ 
+        0.5f, 0.5f,               //0 -> Bottom Left
+        0.5f,  0.5f,              //1 -> Top Left
+        0.5f, 0.5f,               //2 -> Bottom Right
+        0.5f, 0.5f };             //3 -> Top Right
+
+    std::vector<GLuint> indices = { 0, 1, 2, 1, 3, 2 };
+    boxMesh = new Mesh(vertices, indices);
 }
 
 int main() {
@@ -238,11 +288,15 @@ int main() {
     glfwWindowHint(GLFW_SAMPLES, 4);
     glEnable(GL_MULTISAMPLE);
 
+    // Prepare Meshes
+    prepareCircleModel();
+    prepareBoxModel();
+
     // Spawn Entities.
-    entities.push_back(new EntityBox(Vector2(rand() % SCREEN_WIDTH * 0.8f, rand() % SCREEN_HEIGHT - 200), rand() % 360));
+    entities.push_back(new EntityBox(Vector2(rand() % SCREEN_WIDTH * 0.8f, rand() % SCREEN_HEIGHT - 200), boxMesh));
     
     for (int i = 0; i < 2; i++) {
-        entities.push_back(new EntityCircle(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20)));
+        entities.push_back(new EntityCircle(Vector2(rand() % SCREEN_WIDTH - 20, rand() % SCREEN_HEIGHT - 20), circleMesh));
     }
 
     double lastTime = glfwGetTime();
@@ -280,7 +334,7 @@ int main() {
             entities[i]->Render(shaderProgram, deltaTime);
         }
 
-       /* GLenum err;
+       /*GLenum err;
         while ((err = glGetError()) != GL_NO_ERROR)
         {
             std::cout << err << "\n";
