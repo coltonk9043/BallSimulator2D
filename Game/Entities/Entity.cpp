@@ -84,18 +84,6 @@ void Entity::setKinematic(bool state) {
 }
 
 /// <summary>
-/// Performs collision checks on a list of Entities.
-/// </summary>
-/// <param name="ents">The list of Entities to be checked.</param>
-void Entity::CheckCollisions(std::vector<Entity*> ents) {
-    for (int i = 0; i < ents.size(); i++) {
-        Entity* ent = ents[i];
-        if (ent == this) continue;
-        this->Collision(ent);
-    }
-}
-
-/// <summary>
 /// Update function. Performs Generic Entity update functions.
 /// </summary>
 void Entity::Update() {

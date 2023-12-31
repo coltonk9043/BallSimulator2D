@@ -21,11 +21,13 @@ const unsigned int SCREEN_WIDTH = 800;
 const unsigned int SCREEN_HEIGHT = 600;
 const bool FULLSCREEN = true;
 
+const double PI = 3.14159265358979311599796346854;
+
 // Model Variables
 const unsigned int TRIANGLE_RESOLUTION = 20;
 
-const float ANGLE_TO_RADIANS = std::_Pi / 180.0f;
-const float RADIANS_TO_ANGLES = 180.0f / std::_Pi;
+const float ANGLE_TO_RADIANS = PI / 180.0f;
+const float RADIANS_TO_ANGLES = 180.0f / PI;
 
 enum EntityType {
     CIRCLE,

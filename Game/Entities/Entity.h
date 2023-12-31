@@ -17,8 +17,7 @@ class Entity
 		Entity(Vector2 position, float rotation, Mesh* mesh);
 		~Entity();
 		void Update();
-		void CheckCollisions(std::vector<Entity*> ents);
-		virtual void Collision(Entity* ent) = 0;
+		virtual void CheckCollisions(std::vector<Entity*> ents) = 0;
 		virtual void Render(GLuint shaderProgram, double frameDelta);
 		float getBounciness();
 		bool isKinematic();
@@ -48,7 +47,7 @@ public:
 	EntityCircle(Vector2 position, Mesh* mesh);
 	EntityCircle(Vector2 position, float rotation, Mesh* mesh);
 	~EntityCircle();
-	void Collision(Entity* ent) override;
+	void CheckCollisions(std::vector<Entity*> ents) override;
 private:
 	void PreUpdate() override;
 	void PostUpdate() override;
@@ -63,7 +62,7 @@ public:
 	EntityBox(Vector2 position, Mesh* mesh);
 	EntityBox(Vector2 position, float rotation, Mesh* mesh);
 	~EntityBox();
-	void Collision(Entity* ent) override;
+	void CheckCollisions(std::vector<Entity*> ents) override;
 	float getWidth();
 	float getLength();
 private:

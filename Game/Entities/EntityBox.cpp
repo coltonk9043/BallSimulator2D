@@ -54,7 +54,7 @@ void EntityBox::PostUpdate() {
     }
 }
 
-void EntityBox::Collision(Entity* ent) {
+void EntityBox::CheckCollisions(std::vector<Entity*> ents) {
 
 }
 
